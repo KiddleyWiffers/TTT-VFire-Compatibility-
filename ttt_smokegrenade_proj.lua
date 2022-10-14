@@ -60,6 +60,15 @@ function ENT:Explode(tr)
 
         local pos = self:GetPos()
         self:Remove()
+		
+		-- Find VFires and slowly extigish them.
+		timer.Create("FireDOT", 1, 20, function()
+			for k, smokeents in pairs(ents.FindInSphere(pos, 200)) do
+				for f, fires in pairs (vFireGetFires(smokeents)) do
+					fires:SoftExtinguish(10)
+				end	
+			end
+		end)
     else
         local spos = self:GetPos()
 
@@ -75,13 +84,7 @@ function ENT:Explode(tr)
         if tr.Fraction ~= 1.0 then
             spos = tr.HitPos + tr.HitNormal * 0.6
         end
-		timer.Create("FireDOT", 1, 20, function()
-			for k, smokeents in pairs(ents.FindInSphere(spos, 200)) do
-				for f, fires in pairs (vFireGetFires(smokeents)) do
-					fires:SoftExtinguish(10)
-				end	
-			end
-		end)
+		
         -- Smoke particles can't get cleaned up when a round restarts, so prevent
         -- them from existing post-round.
         if GetRoundState() == ROUND_POST then return end
