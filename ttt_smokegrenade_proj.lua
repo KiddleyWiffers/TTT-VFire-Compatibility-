@@ -78,7 +78,7 @@ function ENT:Explode(tr)
 		timer.Create("FireDOT", 1, 20, function()
 			for k, smokeents in pairs(ents.FindInSphere(spos, 200)) do
 				for f, fires in pairs (vFireGetFires(smokeents)) do
-					fires:SoftExtiguish(10)
+					fires:SoftExtinguish(10)
 				end	
 			end
 		end)
